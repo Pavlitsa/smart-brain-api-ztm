@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
@@ -19,14 +20,14 @@ const db = knex({
   },
 });
 
-console.log(
-  db
-    .select("*")
-    .from("users")
-    .then((data) => {
-      console.log(data);
-    })
-);
+// console.log(
+//   db
+//     .select("*")
+//     .from("users")
+//     .then((data) => {
+//       console.log(data);
+//     })
+// );
 
 const app = express();
 
@@ -45,8 +46,12 @@ app.get("/profile/:id", profile.handleProfileGet(db));
 
 app.put("/image", image.handleImage(db));
 
-app.listen(5555, () => {
-  console.log("app is running on port 5555");
+app.post("/imageurl", (req, res) => {
+  image.handleApiCall(req, res);
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
 });
 
 /*
